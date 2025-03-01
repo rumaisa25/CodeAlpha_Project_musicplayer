@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playwrite+IT+Moderna:wght@100..400&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+        rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="https://kit.fontawesome.com/de25915fc1.js" crossorigin="anonymous"></script>
+</head>
+
+<body style="background-image: url(bg.jpg); background-size: cover;">
+    <h1>
+        MusicPlayer
+    </h1>
+    
+
+    <div class="container">
+    <div class="box">
+        <p class="list">
+            Your playlist ♪
+        </p>
+        
+        <div class="song" onclick="playSong(0)">
+                <img src="bbymonst.jpg" alt="icon" class="image">
+            
+            <div class="info">
+                <h3>Like That</h3>
+                <p>BABYMONSTER</p>
+                <p class="dur">2:48</p>
+            </div>
+        </div>
+   
+        <div class="song" onclick="playSong(1)">
+           
+                <img src="exo.jpg" alt="icon" class="image">
+            
+            <div class="info">
+                <h3>The Eve</h3>
+                <p>EXO</p>
+                <p class="dur">2:56</p>
+            </div>
+        </div>
+
+        <div class="song" onclick="playSong(2)">
+            
+            <img src="sunmi.jpg" alt="icon" class="image">
+       
+        <div class="info">
+            <h3>Gashina</h3>
+            <p>Sunmi</p>
+            <p class="dur">3:00</p>
+        </div>
+    </div>
+  
+
+        <div class="song" onclick="playSong(3)">
+            
+            <img src="aespa.jpg" alt="icon" class="image">
+        
+        <div class="info">
+            <h3>Whiplash</h3>
+            <p>Aespa</p>
+            <p class="dur">3:03</p>
+        </div>
+    </div>
+   
+    
+        <div class="song" onclick="playSong(4)">
+            
+                <img src="bts.jpg" alt="icon" class="image">
+           
+            <div class="info">
+                <h3>Black Swan</h3>
+                <p>BTS</p>
+                <p class="dur">3:18</p>
+            </div>
+        </div>
+
+        
+        <div class="song" onclick="playSong(5)">
+            
+            <img src="kiof.jpg" alt="icon" class="image">
+        
+        <div class="info">
+            <h3>Te Quiero</h3>
+            <p>Kiss of Life</p>
+            <p class="dur">3:09</p>
+        </div>
+    </div>
+
+        
+        </div>
+
+        <div class="current-song" id="currentSongBox">
+            <img id="songImage" src="bbymonst.jpg" width="160" height="160">
+            <h2 id="songTitle">Like That</h2>
+            <h3 id="songArtist">BABYMONSTER</h3>
+            <audio id="audio" src="likethat.mp3" ontimeupdate="updateProgress()"></audio>
+            <div class="mute">
+                <div onclick="toggleMute()"><i class="fa-solid fa-volume-off" id="toggmute"></i></div>
+            </div>
+            <div style="margin-bottom: -15px; padding-top: 5px;">
+            <input type="range" id="progress" min="0" value="0" step="0.1" onchange="seekSong()">
+            <div class="time">
+            <div id="currentTime">0:00</div> 
+            <div id="duration">0:00</div>
+            </div>
+            </div>
+            <div class="controls">
+                <div onclick="prevSong()"><i class="fa-solid fa-backward-step"></i></div>
+                <div onclick="togglePlay()"><i class="fa-solid fa-pause" id="toggle"></i></div>
+                <div onclick="nextSong()"><i class="fa-solid fa-forward-step"></i></div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+
+</html>
+
+<script>
+    let songs = [
+        { title: "Like That", artist: "BABYMONSTER", src: "likethat.mp3", img: "bbymonst.jpg" },
+        { title: "The Eve", artist: "EXO", src: "eve.mp3", img: "exo.jpg" },
+        { title: "Gashina", artist: "Sunmi", src: "gashina.mp3", img: "sunmi.jpg" },
+        { title: "Whiplash", artist: "Aespa", src:"whiplash.mp3", img: "aespa.jpg"},
+        { title: "Black Swan", artist: "BTS", src: "blackswan.mp3", img: "bts.jpg"},
+        { title: "Te Quiero", artist: "Kiss of Life", src: "tequiero.mp3", img: "kiof.jpg" }
+
+    ];
+    let currentIndex = 0;
+    let audio = document.getElementById("audio");
+    let songTitle = document.getElementById("songTitle");
+    let songArtist = document.getElementById("songArtist");
+    let songImage = document.getElementById("songImage");
+    let progress = document.getElementById("progress");
+    let currentTime = document.getElementById("currentTime");
+    let duration = document.getElementById("duration");
+    let togg = document.getElementById("toggle");
+    let toggmute = document.getElementById("toggmute");
+   
+
+    togg.classList.add("fa-play");
+
+    function playSong(index) {
+        
+        currentIndex = index;
+        audio.src = songs[currentIndex].src;
+        songTitle.textContent = songs[currentIndex].title;
+        songArtist.textContent = songs[currentIndex].artist;
+        songImage.src = songs[currentIndex].img;
+        audio.play();
+        togg.classList.add("fa-pause");
+        togg.classList.remove("fa-play");
+    }
+
+    
+
+    function togglePlay() {
+        if (audio.paused && togg.classList.contains("fa-play")) {
+            audio.play();
+            togg.classList.remove("fa-play");
+            togg.classList.add("fa-pause");
+        } else {
+            audio.pause();
+            togg.classList.add("fa-play");
+            togg.classList.remove("fa-pause");
+        }
+    }
+
+    function toggleMute() {
+        audio.muted = !audio.muted;
+        if(audio.muted){
+            toggmute.classList.add("fa-volume-xmark");
+            toggmute.classList.remove("fa-volume-off");
+        }
+        else{
+            toggmute.classList.add("fa-volume-off");
+            toggmute.classList.remove("fa-volume-xmark");
+        }
+    }
+
+    function nextSong() {
+        currentIndex = (currentIndex + 1) % songs.length;
+        playSong(currentIndex);
+    }
+
+    function prevSong() {
+        currentIndex = (currentIndex - 1 + songs.length) % songs.length;
+        playSong(currentIndex);
+    }
+
+    function updateProgress() {
+        progress.max = audio.duration;
+        progress.value = audio.currentTime;
+        currentTime.textContent = formatTime(audio.currentTime);
+        duration.textContent = formatTime(audio.duration);
+    }
+
+    function seekSong() {
+        audio.currentTime = progress.value;
+    }
+
+    function formatTime(seconds) {
+        let min = Math.floor(seconds / 60);
+        let sec = Math.floor(seconds % 60);
+        return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+    }
+
+    audio.addEventListener("ended", nextSong);
+
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+    const audio = document.querySelector("audio");
+    const musicBox = document.querySelector(".current-song");
+    
+   
+
+    audio.addEventListener("play", () => {
+        musicBox.classList.add("playing");
+       
+    });
+
+    audio.addEventListener("pause", () => {
+        musicBox.classList.remove("playing");
+      
+    });
+
+    audio.addEventListener("ended", () => {
+        musicBox.classList.remove("playing");
+      
+    });
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const audio = document.querySelector("audio");
+    const songItems = document.querySelectorAll(".song"); // Select all song elements
+    const songContainer = document.querySelector(".box"); // Use .box as the container
+
+    songContainer.addEventListener("play", (event) => {
+        const clickedSong = event.target.closest(".song"); // Detect clicked song
+        if (!clickedSong) return; 
+
+        // Remove "active" class from all songs
+        songItems.forEach(song => song.classList.remove("active"));
+
+        // Add "active" class to the clicked song
+        clickedSong.classList.add("active");
+
+        // Play the selected song (assuming each song has a data-src attribute)
+        audio.src = clickedSong.dataset.src;
+        audio.play();
+    });
+
+    audio.addEventListener("play", () => {
+        // Find and highlight the currently playing song
+        songItems.forEach(song => {
+            if (song.dataset.src === audio.src) {
+                song.classList.add("active");
+            } else {
+                song.classList.remove("active");
+            }
+        });
+    });
+
+    audio.addEventListener("pause", () => {
+        // Keep the highlight until another song is played
+    });
+
+    audio.addEventListener("ended", () => {
+        songItems.forEach(song => song.classList.remove("active"));
+    });
+});
+
+
+
+
+
+</script>
