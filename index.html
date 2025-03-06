@@ -242,26 +242,26 @@
 
 document.addEventListener("DOMContentLoaded", () => {
     const audio = document.querySelector("audio");
-    const songItems = document.querySelectorAll(".song"); // Select all song elements
-    const songContainer = document.querySelector(".box"); // Use .box as the container
+    const songItems = document.querySelectorAll(".song"); 
+    const songContainer = document.querySelector(".box"); 
 
     songContainer.addEventListener("play", (event) => {
-        const clickedSong = event.target.closest(".song"); // Detect clicked song
+        const clickedSong = event.target.closest(".song"); 
         if (!clickedSong) return; 
 
-        // Remove "active" class from all songs
+        
         songItems.forEach(song => song.classList.remove("active"));
 
-        // Add "active" class to the clicked song
+       
         clickedSong.classList.add("active");
 
-        // Play the selected song (assuming each song has a data-src attribute)
+        
         audio.src = clickedSong.dataset.src;
         audio.play();
     });
 
     audio.addEventListener("play", () => {
-        // Find and highlight the currently playing song
+        
         songItems.forEach(song => {
             if (song.dataset.src === audio.src) {
                 song.classList.add("active");
@@ -272,7 +272,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     audio.addEventListener("pause", () => {
-        // Keep the highlight until another song is played
+      
     });
 
     audio.addEventListener("ended", () => {
